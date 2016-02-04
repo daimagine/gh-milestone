@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { useRouterHistory } from 'react-router'
 import { createHistory } from 'history'
-import routes from './routes'
+import makeRoutes from './routes'
 import Root from './containers/Root'
 import configureStore from './redux/configureStore'
 import { addLocaleData } from 'react-intl'
@@ -17,6 +17,8 @@ const history = useRouterHistory(createHistory)(historyConfig)
 
 const initialState = window.__INITIAL_STATE__
 const store = configureStore({ initialState, history })
+
+const routes = makeRoutes(store)
 
 addLocaleData(en)
 addLocaleData(de)
@@ -42,3 +44,9 @@ function start () {
     document.getElementById('root')
   )
 }
+
+// Render the React application to the DOM
+ReactDOM.render(
+  <Root history={history} routes={routes} store={store} />,
+  document.getElementById('root')
+)
