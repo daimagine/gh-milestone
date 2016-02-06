@@ -7,10 +7,10 @@ import { connect } from 'react-redux'
 
 class Root extends React.Component {
   static propTypes = {
-    history: React.PropTypes.object.isRequired,
-    routes: React.PropTypes.element.isRequired,
-    store: React.PropTypes.object.isRequired,
-    locale: React.PropTypes.string.isRequired
+    history: PropTypes.object.isRequired,
+    routes: PropTypes.element.isRequired,
+    store: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired
   };
 
   get content () {

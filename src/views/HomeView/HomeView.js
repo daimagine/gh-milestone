@@ -52,10 +52,10 @@ const mapStateToProps = (state) => ({
 })
 export class HomeView extends React.Component {
   static propTypes = {
-    counter: React.PropTypes.number.isRequired,
-    doubleAsync: React.PropTypes.func.isRequired,
-    increment: React.PropTypes.func.isRequired,
-    localeChange: React.PropTypes.func.isRequired
+    counter: PropTypes.number.isRequired,
+    doubleAsync: PropTypes.func.isRequired,
+    increment: PropTypes.func.isRequired,
+    localeChange: PropTypes.func.isRequired
   };
 
   render () {
