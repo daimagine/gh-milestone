@@ -8,7 +8,8 @@
     "flow-vars"
   ],
   "env"     : {
-    "browser" : true
+    "browser" : true,
+    "es6" : true
   },
   "globals" : {
     "__DEV__"      : false,
