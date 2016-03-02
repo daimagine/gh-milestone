@@ -9,4 +9,3 @@ const host = config.server_host
 
 server.listen(port)
 debug(`Server is now running at ${host}:${port}.`)
-

@@ -1,15 +1,57 @@
 import Koa from 'koa'
 import convert from 'koa-convert'
+import bodyParser from 'koa-bodyparser'
+import router from 'koa-route'
 import webpack from 'webpack'
 import webpackConfig from '../build/webpack.config'
 import historyApiFallback from 'koa-connect-history-api-fallback'
 import serve from 'koa-static'
 import _debug from 'debug'
 import config from '../config'
+import github from 'octonode'
 
 const debug = _debug('app:server')
 const paths = config.utils_paths
 const app = new Koa()
+
+app.use(convert(bodyParser()))
+
+const auth = {
+  access_token: function *() {
+    const code = this.request.body.code
+    if (!code) return this.throw('invalid code', 404)
+    const getToken = function (callback) {
+      github.auth.config({
+        id: config.github.id,
+        secret: config.github.secret
+      }).login(code, function (err, token) {
+        callback(err, token)
+      })
+    }
+    const token = yield getToken
+    const client = github.client(token)
+    if (!client) return this.throw('invalid token', 500)
+    const getProfile = function (client) {
+      const profile = function (client, callback) {
+        client.get('/user', {}, function (err, status, body) {
+          console.log(err, status, body)
+          callback(err, body)
+        })
+      }
+      return function (callback) {
+        profile(client, callback)
+      }
+    }
+    const user = yield getProfile(client)
+    if (!user) return this.throw('profile fetch failed', 500)
+    this.body = {
+      user: user,
+      token: token
+    }
+  }
+}
+
+app.use(convert(router.post('/access_token', auth.access_token)))
 
 // This rewrites all routes requests to the root /index.html file
 // (ignoring file requests). If you want to implement isomorphic
