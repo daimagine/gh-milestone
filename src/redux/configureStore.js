@@ -1,7 +1,5 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import { syncHistory } from 'react-router-redux'
-import reduxReactFetch from 'redux-react-fetch'
-import fetch from 'isomorphic-fetch'
 import thunk from 'redux-thunk'
 import rootReducer from './rootReducer'
 
@@ -10,7 +8,7 @@ export default function configureStore ({ initialState = {}, history }) {
   const routerMiddleware = syncHistory(history)
 
   // Compose final middleware and use devtools in debug environment
-  let middleware = applyMiddleware(thunk, routerMiddleware, reduxReactFetch(fetch))
+  let middleware = applyMiddleware(thunk, routerMiddleware)
   if (__DEBUG__) {
     const devTools = window.devToolsExtension
       ? window.devToolsExtension()

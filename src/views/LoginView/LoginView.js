@@ -7,10 +7,6 @@ const mapStateToProps = (state) => ({
   auth: state.auth
 })
 
-const mapActionToProps = () => Object.assign({},
-  authActions
-)
-
 export class LoginView extends React.Component {
   static propTypes = {
     router: PropTypes.object.isRequired,
@@ -36,4 +32,6 @@ export class LoginView extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapActionToProps)(LoginView)
+export default connect(mapStateToProps, Object.assign({},
+  authActions
+))(LoginView)

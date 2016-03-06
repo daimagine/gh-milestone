@@ -9,7 +9,8 @@ import { actions as authActions } from 'redux/modules/auth'
 // very easy to navigate to files regardless of how deeply nested
 // your current file is.
 import CoreLayout from 'layouts/CoreLayout/CoreLayout'
-import DashboardView from 'views/DashboardView/DashboardView'
+import OrganizationView from 'views/OrganizationView/OrganizationView'
+import OrganizationDetailView from 'views/OrganizationView/OrganizationDetailView'
 import HomeView from 'views/HomeView/HomeView'
 import LoginView from 'views/LoginView/LoginView'
 import NotFoundView from 'views/NotFoundView/NotFoundView'
@@ -22,10 +23,11 @@ const UserIsAuthenticated = UserAuthWrapper({
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
-    <IndexRoute component={UserIsAuthenticated(DashboardView)} />
-    <Route path='/auth' component={LoginView} />
-    <Route path='/sample' component={HomeView} />
-    <Route path='/404' component={NotFoundView} />
+    <IndexRoute component={UserIsAuthenticated(OrganizationView)} />
+    <Route path='/orgs/:id' component={UserIsAuthenticated(OrganizationDetailView)} />
+    <Route path='auth' component={LoginView} />
+    <Route path='sample' component={HomeView} />
+    <Route path='404' component={NotFoundView} />
     <Redirect from='*' to='/404' />
   </Route>
 )

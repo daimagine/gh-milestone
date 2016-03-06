@@ -60,6 +60,7 @@ export class HomeView extends React.Component {
 
   render () {
     const {localeChange} = this.props
+    console.log(this.props.increment)
     return (
       <div className='container text-center'>
       <LanguageSelector onChange={localeChange}>prueba Idioma Selector</LanguageSelector>

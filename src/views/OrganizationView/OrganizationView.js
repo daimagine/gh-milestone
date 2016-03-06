@@ -8,11 +8,7 @@ const mapStateToProps = (state) => ({
   orgs: state.orgs
 })
 
-const mapActionToProps = () => Object.assign({},
-  orgsActions
-)
-
-export class DashboardView extends React.Component {
+export class OrganizationView extends React.Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
     orgs: PropTypes.object.isRequired,
@@ -38,4 +34,6 @@ export class DashboardView extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapActionToProps)(DashboardView)
+export default connect(mapStateToProps, Object.assign({},
+  orgsActions
+))(OrganizationView)

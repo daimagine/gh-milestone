@@ -24,7 +24,7 @@ const GITHUB_REDIRECT_URI = 'http://localhost:3000/auth'
 // ------------------------------------
 export const login = () => {
   return () => {
-    const scopes = `scopes=${GITHUB_SCOPES}`
+    const scopes = `scope=${GITHUB_SCOPES}`
     const client_id = `client_id=${GITHUB_CLIENT_ID}`
     const redirect_uri = `redirect_uri=${GITHUB_REDIRECT_URI}`
     const params = `${client_id}&${scopes}&${redirect_uri}`
