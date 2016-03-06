@@ -37,24 +37,26 @@ export class OrganizationDetailView extends React.Component {
           <div>
             { repos.map((repo) => {
               let milestoneContent = <div></div>
-              const miles = milestones[repo.id]
-              if (miles) {
-                milestoneContent = (
-                  <div>
-                    { miles.map((mile) => {
-                      return (
-                        <div key={mile.id}>
-                          <h4>{mile.title} <a href={mile.html_url}>[link]</a></h4>
-                          <dl>
-                            <dt>open issues: {mile.open_issues}</dt>
-                            <dt>closed issues: {mile.closed_issues}</dt>
-                            { mile.due_on ? <dt>due on {mile.due_on}</dt> : '' }
-                          </dl>
-                        </div>
-                      )
-                    }) }
-                  </div>
-                )
+              if (milestones) {
+                const miles = milestones[repo.id]
+                if (miles) {
+                  milestoneContent = (
+                    <div>
+                      { miles.map((mile) => {
+                        return (
+                          <div key={mile.id}>
+                            <h4>{mile.title} <a href={mile.html_url}>[link]</a></h4>
+                            <dl>
+                              <dt>open issues: {mile.open_issues}</dt>
+                              <dt>closed issues: {mile.closed_issues}</dt>
+                              { mile.due_on ? <dt>due on {mile.due_on}</dt> : '' }
+                            </dl>
+                          </div>
+                        )
+                      }) }
+                    </div>
+                  )
+                }
               }
               return (
                 <div key={repo.id}>
