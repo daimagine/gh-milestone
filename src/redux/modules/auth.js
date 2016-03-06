@@ -1,11 +1,14 @@
 /* @flow */
+import axios from 'axios'
 import { handleActions } from 'redux-actions'
+import { push } from 'react-router-redux'
 
 // ------------------------------------
 // Constants
 // ------------------------------------
 export const AUTHENTICATE = 'AUTHENTICATE'
 export const AUTHENTICATE_SUCCESS = 'AUTHENTICATE_SUCCESS'
+export const AUTHENTICATE_FAILED = 'AUTHENTICATE_FAILED'
 
 // ------------------------------------
 // Github stuffs
@@ -31,19 +34,47 @@ export const login = () => {
   }
 }
 
-export const authenticate = (code) => ({
-  type: AUTHENTICATE,
-  url: GITHUB_ACCESS_TOKEN_URL,
-  method: 'post',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  },
-  body: {
-    client_id: GITHUB_CLIENT_ID,
-    code
-  },
-  then: AUTHENTICATE_SUCCESS
+export const authenticate = (code) => {
+  return (dispatch) => {
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    return axios({
+      url: GITHUB_ACCESS_TOKEN_URL,
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      responseType: 'json',
+      data: {
+        client_id: GITHUB_CLIENT_ID,
+        code
+      }
+    })
+    .then((response) => {
+      console.log(response.data)
+      dispatch(authenticateSuccess(response.data))
+      localStorage.setItem('user', JSON.stringify(response.data.user))
+      localStorage.setItem('token', response.data.token)
+    })
+    .catch((response) => {
+      console.log(response.data)
+      dispatch(authenticateFailed(response.data))
+    })
+    .then((response) => {
+      dispatch(push('/'))
+    })
+  }
+}
+
+export const authenticateSuccess = (payload): Action => ({
+  type: AUTHENTICATE_SUCCESS,
+  payload: payload
+})
+
+export const authenticateFailed = (payload): Action => ({
+  type: AUTHENTICATE_FAILED,
+  payload: payload
 })
 
 export const actions = {
@@ -57,14 +88,22 @@ export const actions = {
 export default handleActions({
   AUTHENTICATE: (state, action) => ({
     user: null,
-    token: null
+    token: null,
+    error: null
   }),
 
   AUTHENTICATE_SUCCESS: (state, action) => ({
-    user: action.response.result.user,
-    token: action.response.result.token
+    user: action.payload.user,
+    token: action.payload.token,
+    error: null
+  }),
+
+  AUTHENTICATE_FAILED: (state, action) => ({
+    user: null,
+    token: null,
+    error: action.payload.error
   })
 }, {
-  user: null,
-  token: null
+  user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
+  token: localStorage.getItem('token')
 })

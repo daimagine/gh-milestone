@@ -15,7 +15,7 @@ import LoginView from 'views/LoginView/LoginView'
 import NotFoundView from 'views/NotFoundView/NotFoundView'
 
 const UserIsAuthenticated = UserAuthWrapper({
-  authSelector: state => state.user, // how to get the user state
+  authSelector: state => state.auth.user, // how to get the user state
   redirectAction: authActions.login, // redux action to dispatch for redirect
   wrapperDisplayName: 'UserIsAuthenticated' // a nice name for this auth check
 })
