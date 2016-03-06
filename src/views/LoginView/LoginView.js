@@ -20,16 +20,11 @@ export class LoginView extends React.Component {
   }
 
   render () {
-    let content = <p>authenticating github credential..</p>
-    const {auth} = this.props
-    if (auth && auth.user) {
-      content = <p>welcome, {auth.user.name}</p>
-    }
     return (
       <div className='container'>
         <div className='row'>
           <div className='col-xs-4 col-xs-offset-4'>
-            {content}
+            <p>authenticating github credential..</p>
           </div>
         </div>
       </div>
