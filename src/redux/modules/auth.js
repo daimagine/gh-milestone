@@ -36,6 +36,7 @@ export const login = () => {
 
 export const authenticate = (code) => {
   return (dispatch) => {
+    console.log('authenticating')
     localStorage.removeItem('user')
     localStorage.removeItem('token')
     return axios({
